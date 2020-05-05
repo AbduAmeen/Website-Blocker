@@ -73,37 +73,45 @@ function loadCurrentExtern() {
             aud.hidden = true;
         }
         else {
-            window.webkitRequestFileSystem(PERSISTENT, data.extern.size, function(fs) {
-                fs.root.getFile(data.extern.name, {create: false}, function(f) {
-                    f.file(function(fi) {
-                        var type = fi.type.substring(0,fi.type.indexOf('/'));
-                        
-                        previewtext.hidden = false;
-                        preview.hidden = true;
-                        vid.hidden = true;
-                        obj.hidden = true;
-                        aud.hidden = true;
-                        urlbox.setAttribute('placeholder', '');
+            preview.hidden = true;
+            vid.hidden = true;
+            obj.hidden = true;
+            aud.hidden = true;
+            
+            if (data.extern == 0) {
+                preview.setAttribute("src", "images/default_image.jpg");
+                preview.hidden = false;
+            }
+            else {
+                window.webkitRequestFileSystem(PERSISTENT, data.extern.size, function(fs) {
+                    fs.root.getFile(data.extern.name, {create: false}, function(f) {
+                        f.file(function(fi) {
+                            var type = fi.type.substring(0,fi.type.indexOf('/'));
+                            
+                            previewtext.hidden = false;
+                            
+                            urlbox.setAttribute('placeholder', '');
 
-                        if (type == "image") {
-                            preview.setAttribute("src", f.toURL());
-                            preview.hidden = false;
-                        }
-                        else if (type == "audio") {
-                            aud.setAttribute("src", f.toURL());
-                            aud.hidden = false;               
-                        }
-                        else if (type == "video") {
-                            vid.setAttribute("src", f.toURL());
-                            vid.hidden = false;
-                        }
-                        else {
-                            obj.setAttribute("src", f.toURL());
-                            obj.hidden = false;
-                        }
-                    });
-                }, console.error)
-            }, console.error);
+                            if (type == "image") {
+                                preview.setAttribute("src", f.toURL());
+                                preview.hidden = false;
+                            }
+                            else if (type == "audio") {
+                                aud.setAttribute("src", f.toURL());
+                                aud.hidden = false;               
+                            }
+                            else if (type == "video") {
+                                vid.setAttribute("src", f.toURL());
+                                vid.hidden = false;
+                            }
+                            else {
+                                obj.setAttribute("src", f.toURL());
+                                obj.hidden = false;
+                            }
+                        });
+                    }, console.error)
+                }, console.error);
+            }
         }
     });
 }
