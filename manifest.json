@@ -1,0 +1,15 @@
+{
+    "manifest_version": 2,
+    "name": "Test Extension",
+    "description": "Just a test",
+    "version": "0.1",
+    "permissions": ["activeTab","tabs", "webNavigation", "<all_urls>", "storage", "unlimitedStorage"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+    "options_page": "options.html" 
+}

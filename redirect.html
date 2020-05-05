@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>  
+    <head>
+        <title>Page Title</title>
+        <script type="text/javascript" src="redirect.js"></script>
+        <link type="text/css" rel="stylesheet" href="options.css">
+        <link type="text/css" rel="stylesheet" href="redirect.css">
+    </head>
+    <body>
+        <nav id="navbar">
+            <ul class="navbar">
+                <li><a href="options.html">Blocked Websites</a></li> 
+                <li><a href="">Permitted Websites</a></li> 
+                <li class="active_page"><a href="redirect.html">Redirect</a></li> 
+            </ul>
+        </nav>
+        <div class="main">
+            <h1>Redirect</h1>
+            <form>
+                <label for="myfile">Select a file:</label>
+                <input type="file" id="redirectFile">
+                <br><br>
+                <label for="redirectURL">Enter a URL:</label>
+                <input type="url" id="redirectURL"> 
+                <input type="submit" id="redirectURLBut"></br></br>
+                <label id="filepreviewtext">File Preview:</label></br>
+                <div>
+                    <img id="preview" class="content"></img>
+                    <video id="vid" class="content"controls hidden></video>
+                    <audio id="aud" controls hidden></audio>
+                    <iframe id="obj" class="content" hidden></iframe>
+                </div>
+            </form>
+        </div>
+        
+    </body>
+</html>
