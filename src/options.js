@@ -5,7 +5,6 @@ var rules = {};
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("addrow").addEventListener("click", function() {
         var row = new Row();
-        
         row.websitecell.dispatchEvent(new Event("dblclick"));
     });
     chrome.storage.local.get("rules", function(r) {
@@ -28,22 +27,24 @@ document.addEventListener("updaterules", function(d) {
     if (detail.new == "") {
         return;
     }
-
+    
     if (detail.delete == true) {
         delete rules[detail.previous];
         return;
     }
-    var scheme = ['http', 'https'];
+    // var scheme = ['http', 'https'];
 
-    if (detail.scheme.https == false) {scheme.pop();} 
+    // if (detail.scheme.https == false) {scheme.pop();} 
 
-    if (detail.scheme.http == false) {scheme.shift()}
+    // if (detail.scheme.http == false) {scheme.shift()}
 
-    if (detail.previous == "") {
-        rules[detail.new] = {
-            hostContains: detail.new
-        }
+    if (rules[detail.previous] != undefined) {
+        delete rules[detail.previous];
     }
+
+    rules[detail.new] = {
+        hostContains: detail.new
+    };
     // else if (rules[detail.previous] != undefined) {
     //     let val = rules[detail.new];
 

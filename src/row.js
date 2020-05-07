@@ -91,9 +91,23 @@ export class Row {
             currentwebsite = this.innerText.trim();
 
             if (currentwebsite != "" && currentwebsite != previouswebsite) {
-                let returnobj = {previous: previouswebsite, new: currentwebsite, scheme: currentscheme, delete: false}
-                document.dispatchEvent(new CustomEvent("updaterules", {detail: returnobj}));
-                previouswebsite = currentwebsite;
+                try {
+                    var url = new URL(currentwebsite);
+                    
+                    if (url.protocol === "http" || url.protocol === "https") {
+                        let returnobj = {previous: previouswebsite, new: currentwebsite, scheme: currentscheme, delete: false}
+                        document.dispatchEvent(new CustomEvent("updaterules", {detail: returnobj}));
+                        previouswebsite = currentwebsite;
+                    }
+                } catch (error) {
+                    let pattern = /^[a-z\d]([a-z\d\-]{0,61}[a-z\d])?(\.[a-z\d]([a-z\d\-]{0,61}[a-z\d])?)*$/i;
+                    
+                    if (pattern.test(currentwebsite)) {
+                        let returnobj = {previous: previouswebsite, new: currentwebsite, scheme: currentscheme, delete: false}
+                        document.dispatchEvent(new CustomEvent("updaterules", {detail: returnobj}));
+                        previouswebsite = currentwebsite;    
+                    }
+                }
             }
         });
 
@@ -119,12 +133,12 @@ export class Row {
                 currentscheme.https = true;
             }        
 
-            if (currentscheme.http != previousscheme.http || currentscheme.https != previousscheme.https) {
-                let returnobj = {previous: previouswebsite, new: currentwebsite, scheme: scheme, delete: false}
-                document.dispatchEvent(new CustomEvent("updaterules", {detail: returnobj}));
-                previousscheme.https = currentscheme.https;
-                previousscheme.http = currentscheme.http;
-            }
+            // if (currentscheme.http != previousscheme.http || currentscheme.https != previousscheme.https) {
+            //     let returnobj = {previous: previouswebsite, new: currentwebsite, scheme: scheme, delete: false}
+            //     document.dispatchEvent(new CustomEvent("updaterules", {detail: returnobj}));
+            //     previousscheme.https = currentscheme.https;
+            //     previousscheme.http = currentscheme.http;
+            // }
         });
 
         this.websitecell.addEventListener("keydown", function(e) {
