@@ -1,42 +1,62 @@
 var rules;
 var redirectLink;
+var blockedtabs = {};
 
 function onTabActivated(activeInfo) {
     chrome.tabs.get(activeInfo.tabId, function(tab) {
         if (tab.url != undefined) {
-            console.log(tab.url);
+            window.sessionStorage[tab.id] = tab.url;
             redirect(tab);
         }
     });
 }
 
 function onTabUpdated(tabId, changeInfo, tab) {
+    if(changeInfo.url){
+        window.sessionStorage[tabId] = changeInfo.url;
+    }
+
     if (tab.url != undefined) {
         redirect(tab)
     }
 }
 
 function redirect(tab) {
-    if (rules.length == 0 || rules == undefined) {
+    if (rules == undefined || rules.length == 0) {
         return;
     }
 
     try {
         let url = new URL(tab.url);
         let hostname = url.hostname;
-    
+
         if (rules[url.toString()] != undefined) {
+            window.sessionStorage[tab.id + "p"] = tab.url;
             chrome.tabs.update({url: redirectLink});
         }
         else if (rules[hostname] != undefined) {
+            window.sessionStorage[tab.id + "p"] = tab.url;
             chrome.tabs.update({url: redirectLink});
         }
         else if (url.hostname.lastIndexOf('.') != url.hostname.indexOf('.')) {
             hostname = hostname.slice(url.hostname.lastIndexOf('.', url.hostname.lastIndexOf('.') - 1) + 1, url.hostname.length);
             
             if (rules[hostname] != undefined) {
+                window.sessionStorage[tab.id + "p"] = tab.url;
                 chrome.tabs.update({url: redirectLink});
             }
+        }
+
+        if (url.toString() == chrome.runtime.getURL("blocked.html")) {
+            chrome.browserAction.setIcon({path: "images/restriction-shield16.png"});
+            return;
+        }
+        else if (url.protocol != "http:" && url.protocol != "https:") {
+            chrome.browserAction.setIcon({path: "images/red-unavailable16.png"});            
+        }
+        else {
+            chrome.browserAction.setIcon({path: "images/green-checkmark16.png"});
+            return;
         }
     } catch (error) {
         console.log(error);
@@ -100,3 +120,13 @@ chrome.storage.onChanged.addListener(function(changes, areaname) {
 
 chrome.tabs.onUpdated.addListener(onTabUpdated);
 chrome.tabs.onActivated.addListener(onTabActivated);
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    if (message.message == "popupOpened") {
+        sendResponse({previousUrl: window.sessionStorage[message.tabId]});
+    }
+    else if (message.message == "previouslink") {
+        sendResponse({previousUrl: window.sessionStorage[message.tabId + "p"]});
+    }
+    return true;
+});
