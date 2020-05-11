@@ -1,5 +1,4 @@
 body {
-    height: 150px;
     width: 300px;
     text-align: center;
 }
@@ -7,4 +6,9 @@ body {
 button {
     border: 1px solid rgba(128, 128, 128, 0.575);
     height: 25px;
+    background-color: white;
 }
+
+button:hover {
+    background-color: whitesmoke;
+} 

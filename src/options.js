@@ -14,11 +14,16 @@ document.addEventListener('DOMContentLoaded', function() {
             rules = r.rules;
 
             for (const [key, value] of Object.entries(rules)) {
-                //let scheme = value.conditions[0].pageUrl.schemes;    
                 rows[key] = new Row(key);
             }    
         }
     });
+
+    chrome.storage.onChanged.addListener(function(changes, areaname) {
+        if (changes.rules != undefined && areaname == "local") {
+            rules = changes.rules.newValue;        
+        }
+    })
 });
 
 document.addEventListener("updaterules", function(d) {
@@ -32,11 +37,6 @@ document.addEventListener("updaterules", function(d) {
         delete rules[detail.previous];
         return;
     }
-    // var scheme = ['http', 'https'];
-
-    // if (detail.scheme.https == false) {scheme.pop();} 
-
-    // if (detail.scheme.http == false) {scheme.shift()}
 
     if (rules[detail.previous] != undefined) {
         delete rules[detail.previous];
@@ -45,13 +45,8 @@ document.addEventListener("updaterules", function(d) {
     rules[detail.new] = {
         hostContains: detail.new
     };
-    // else if (rules[detail.previous] != undefined) {
-    //     let val = rules[detail.new];
-
-    //     val.conditions[0].pageUrl.schemes = scheme;
-    // }
 }); 
 
-window.addEventListener("beforeunload", function() {
+window.addEventListener("blur", function() {
     chrome.storage.local.set({rules: rules});  
 })

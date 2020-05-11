@@ -95,16 +95,6 @@ td.website {
     text-overflow: ellipsis;
 }
 
-th.scheme {
-    width: 77px;
-    padding-left: 2px;
-}
-
-td.scheme {
-    width: 77px;
-    padding: 0;
-}
-
 th.buttons {
     width: 36px;
     padding-left: 2px;
@@ -158,51 +148,6 @@ button.delete img {
     height: 24px;
     width: 24px;
 }
-button.dropdown {
-    border: none;
-    padding: 5px 10px 5px 10px;
-    background-color:white;
-    color: black;
-    outline: none;  
-    width: 75px;
-    height: 100%;
-}
-
-div.dropdown:hover button.dropdown {
-    background-color: #d8ffd6;
-}
-
-button.dropdownbut {
-    border: none;
-    background-color: whitesmoke;
-    border-collapse: collapse;
-    padding: 5px 10px 5px 10px;
-    min-width: 70px;
-    position: relative;
-    outline: none;
-    text-align: left;
-}
-
-button.dropdownbut:hover {
-    background-color: rgb(221, 221, 221);
-}
-
-div.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-div.dropdownlist {
-    z-index: 1;
-    text-align: left;
-    display: none;
-}
-
-div.dropdown:hover div.dropdownlist {
-    display: block;
-    position: absolute;
-}
-
 #addlinebut {
     vertical-align: right;
 }

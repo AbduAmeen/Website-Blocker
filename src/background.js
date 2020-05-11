@@ -103,14 +103,7 @@ chrome.runtime.onStartup.addListener(function() {
 
 chrome.storage.onChanged.addListener(function(changes, areaname) {
     if (changes.rules != undefined && areaname == "local") {
-        rules = changes.rules.newValue;
-        // var url = Object.values(changes.rules.newValue);
-
-        // chrome.webNavigation.onCommitted.removeListener(redirect);
-        
-        // if (url.length != 0) {
-        //     chrome.webNavigation.onCommitted.addListener(redirect, {url: url});
-        // }        
+        rules = changes.rules.newValue;    
     }
 
     if (changes.redirect != undefined && areaname == "local") {
@@ -123,7 +116,7 @@ chrome.tabs.onActivated.addListener(onTabActivated);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message.message == "popupOpened") {
-        sendResponse({previousUrl: window.sessionStorage[message.tabId]});
+        sendResponse({currentUrl: window.sessionStorage[message.tabId]});
     }
     else if (message.message == "previouslink") {
         sendResponse({previousUrl: window.sessionStorage[message.tabId + "p"]});
